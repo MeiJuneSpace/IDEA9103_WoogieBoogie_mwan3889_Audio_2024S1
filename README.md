@@ -3,3 +3,5 @@ This is the repository for IDEA9103 Final Project. The owner of the repo is mwan
 
 # Project Description
 
+## Interaction Instruction
+Press space on the keyboard to start playing song.

@@ -1,3 +1,14 @@
+// Create variable to analyze song
+let song;
+// Create container
+let analyzer;
+// Pre-set music to pause status
+let isPlaying = false;
+
+// Set Volume and Pan Variables
+let volume = 1.0; // Full volume
+let pan = 0.0;  // Start of 0 in the middle of the canvas
+
 // Define colours
 let limeGreen, roseRed, milkYellow, linePurple, shallowPurple;
 
@@ -25,6 +36,12 @@ function preload() {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  // Set up a tool to analyze sound's amplitude
+  analyzer = new p5.Amplitude();
+
+  // Connect analyzer to our song to analyze it
+  analyzer.setInput(song);
 
   // State parameter range to use opacity under HSB mode
   // The current project uses RGB as its default colour mode
@@ -77,6 +94,7 @@ function draw() {
   // This must be on the top of the canvas
   drawShadow();
   drawLightShadow();
+
 }
 
 function windowResized() {
@@ -90,4 +108,18 @@ function windowResized() {
 
   // Regenerate small rectangles
   generateSmallRectangles();
+}
+
+function keyPressed() {
+  if (key === ' ') {  // Press space key to start and pause song
+    togglePlayPause();
+  }
+}
+
+function togglePlayPause() {
+  if (song.isPlaying()) {
+    song.pause();
+  } else {
+    song.play();
+  }
 }
