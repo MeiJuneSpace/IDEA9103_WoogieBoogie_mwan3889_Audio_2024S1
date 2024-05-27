@@ -1,3 +1,5 @@
+// This file to for objects classes
+
 // Define a class to organise dimension variables
 
 class InsideCanvas {
