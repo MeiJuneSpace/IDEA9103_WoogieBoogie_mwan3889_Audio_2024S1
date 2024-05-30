@@ -165,6 +165,26 @@ function drawCentredCircle() {
     }
 }
 ```
+The circles will rescale and update their position if the window resized. However, the rescale effect is not prominent as they also changes size based on amplitude of the music.
+```
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+
+  // Update insideCanvas dimensions
+  insideCanvas.updateDimensions();
+
+  // Regenerate purple lines
+  generatePurpleLines();
+
+  // Regenerate small rectangles
+  generateSmallRectangles();
+
+  // Regenerate circles
+  centredCircleArray.forEach(circle => {
+    circle.updatePosition(insideCanvas.x, insideCanvas.y, insideCanvas.width, insideCanvas.height);
+});
+}
+```
 ### Modification of Featured Rectangles
 
 The designer updated the featured rectangle class to rotate the rectangles based on the background music fft.
