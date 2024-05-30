@@ -224,19 +224,22 @@ function generateCentredCircles() {
     centredCircleArray = featuredRectPos.map(data => {
         let radius = data.minDimension * min(windowWidth, windowHeight) / 2; // Calculate the start radius of the circles
         let circleColour = data.color;
+        let relativeX = data.x + data.w / 2;
+        let relativeY = data.y + data.h / 2;
         let centerX = insideCanvas.x + data.x * insideCanvas.width + data.w * insideCanvas.width / 2;
         let centerY = insideCanvas.y + data.y * insideCanvas.height + data.h * insideCanvas.height / 2;
         // Initialise the circle in the middle of the rect
-        return new CircleInRects(centerX, centerY, radius, circleColour);
+        return new CircleInRects(centerX, centerY, radius, circleColour, relativeX, relativeY);
     });
 }
 
 function drawCentredCircle() {
-    let scaleFactor = map(amplitude, 0, 255, 0.1, 8);  // This exaggerate the movement
+    let scaleFactor = map(amplitude, 0, 255, 0.1, 5);  // This exaggerate the movement
 
     for (let i = 0; i < centredCircleArray.length; i++) {
         let circleInRect = centredCircleArray[i];
         circleInRect.updateSize(scaleFactor);
+        circleInRect.updatePosition(insideCanvas.x, insideCanvas.y, insideCanvas.width, insideCanvas.height); // Update position on every draw
         circleInRect.display();
     }
 }

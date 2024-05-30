@@ -93,16 +93,23 @@ class FeatureRectangles {
 
 // Create circles based on the specific featured rectangles' pos
 class CircleInRects {
-    constructor(x, y, radius, color) {
+    constructor(x, y, radius, color, relativeX, relativeY) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = color;
         this.originalRadius = radius; // Create a variable to hold original radius
+        this.relativeX = relativeX; // Store the initial relative positions
+        this.relativeY = relativeY;
     }
 
     updateSize(scaleFactor) {
         this.radius = this.originalRadius * scaleFactor;
+    }
+
+    updatePosition(canvasX, canvasY, canvasWidth, canvasHeight) {
+        this.x = canvasX + this.relativeX * canvasWidth;
+        this.y = canvasY + this.relativeY * canvasHeight;
     }
 
     display() {
