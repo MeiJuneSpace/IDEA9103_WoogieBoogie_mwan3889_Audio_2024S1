@@ -65,8 +65,8 @@ function drawPurpleLines() {
 function drawLightShadow() {
     fill(255, 10);
     noStroke;
-    //Create base part of shallow triangles
-    //Base elements of shallow
+    // Create base part of shadow triangles
+    // Base elements of shallow
     let baseUpX1 = windowWidth / 5;
     let baseUpY1 = windowHeight / 7;
     let baseUpX2 = windowWidth / 5;
@@ -75,21 +75,21 @@ function drawLightShadow() {
     let baseUpY3 = 2 * windowHeight / 7;
     let baseUpX4 = 9 * windowWidth / 25;
     let baseUpY4 = 4 * windowHeight / 7 - 2;
-    //Empty between shallow shapes
+    // Empty between shadow shapes
     let shallowEmptyX = windowWidth / 40;
     let shallowEmptyY = windowHeight / 25;
-    //calculate the distance between two shapes
+    // Calculate the distance between two shapes
     let shallowDistanceX = shallowEmptyX + 4 * windowWidth / 25;
     let shallowDistanceY = shallowEmptyY + 2 * windowHeight / 7;
-    //claculate the distance between vertical column
+    // Calculate the distance between vertical column
     let shallowVerticalDistance = windowHeight / 7 + windowHeight / 35;
-    //Use loop to draw shape
+    // Use loop to draw shape
     for (let col = 0; col < 5; col++) {
         for (let row = 0; row < 3; row++) {
             for (let i = 0; i < 20; i++) {
                 let dx = col * shallowDistanceX;
                 let dy = 1 * row * shallowDistanceY + col * shallowVerticalDistance;
-                //calculate shallow shape value
+                //calculate shadow shape value
                 let x1 = baseUpX1 + i + dx;
                 let y1 = baseUpY1 + 2 * i + dy;
                 let x2 = baseUpX2 + i + dx;
@@ -114,24 +114,17 @@ function drawShadow() {
     rect(0, 0, windowWidth, windowHeight);
 }
 
-// This is small random rectangles in the canvas
-function generateSmallRectangles() {
+// Randomly generate small rects based on draw frame
+function drawRandomRects() {
     let colors = [limeGreen, roseRed, milkYellow];
-    smallRectangles = [];
+
     for (let i = 0; i < numOfSmallRects; i++) {
-        let color = random(colors);
+        fill(random(colors));
         let w = random(insideCanvas.width / 20);
         let h = random(insideCanvas.height / 20);
         let x = insideCanvas.x + random(insideCanvas.width - w);  // This ensures small rects are inside the frame
         let y = insideCanvas.y + random(insideCanvas.height - h); // This ensures small rects are inside the frame
-        smallRectangles.push({ color, x, y, w, h });  // Push rect data into an object
-    }
-}
-
-function drawSmallRectangles() {
-    for (let smallRect of smallRectangles) {
-        fill(smallRect.color);
-        rect(smallRect.x, smallRect.y, smallRect.w, smallRect.h);
+        rect(x, y, w, h);  // Generate rectangles
     }
 }
 
@@ -180,9 +173,11 @@ function generateFeaturedRectangles() {
 }
 
 function drawFeaturedRectangles() {
+    let amplitude = fft.getEnergy(20, 20000); // Get the amplitude for the entire frequency range
     for (let i = 0; i < featuredRectArray.length; i++) {
         let rect = featuredRectArray[i];
         rect.updateSize(insideCanvas.width, insideCanvas.height);
+        rect.updateAngle(amplitude); // Update the rotation angle
         rect.display();
     }
 }
@@ -190,7 +185,7 @@ function drawFeaturedRectangles() {
 // Draw circles inside of specific rectangles
 // Lets get the position of selected rectangles first
 function getFeaturedRectPos() {
-    return [
+    let rects = [
         // In the lime green rects
         // Green 1
         { x: 0, y: 1 / 3, w: 1 / 12.5, h: 1 / 6, color: linePurple },
@@ -213,22 +208,38 @@ function getFeaturedRectPos() {
         // P5
         { x: 1 / 1.25, y: 1 / 1.54, w: 1 / 25, h: 1 / 8, color: roseRed },
     ];
+
+    // Record minimum dimension of each specific rects to create circles
+    rects = rects.map(rect => {
+        rect.minDimension = min(rect.w, rect.h);
+        return rect;
+    });
+    return rects;
 }
 
-// This is the function to generate centred circles
-function generateCentredCircle() {
+// Generate circles based on the specific rect pos and change size based on fft
+function generateCentredCircles() {
     let featuredRectPos = getFeaturedRectPos();
+
     centredCircleArray = featuredRectPos.map(data => {
-        let radius = min(data.w, data.h); // Calculate radius based on the smallest dimension of the rectangle
-        return new circlesInRectangles(data.x + data.w / 2, data.y + data.h / 2, radius, data.color);
+        let radius = data.minDimension * min(windowWidth, windowHeight) / 2; // Calculate the start radius of the circles
+        let circleColour = data.color;
+        let relativeX = data.x + data.w / 2;
+        let relativeY = data.y + data.h / 2;
+        let centerX = insideCanvas.x + data.x * insideCanvas.width + data.w * insideCanvas.width / 2;
+        let centerY = insideCanvas.y + data.y * insideCanvas.height + data.h * insideCanvas.height / 2;
+        // Initialise the circle in the middle of the rect
+        return new CircleInRects(centerX, centerY, radius, circleColour, relativeX, relativeY);
     });
-    centredCircleArray.forEach(circle => circle.updateSize(insideCanvas.width, insideCanvas.height));
 }
 
 function drawCentredCircle() {
+    let scaleFactor = map(amplitude, 0, 255, 0.1, 5);  // This exaggerate the movement
+
     for (let i = 0; i < centredCircleArray.length; i++) {
-        let circle = centredCircleArray[i];
-        circle.updateSize(insideCanvas.width, insideCanvas.height);
-        circle.display();
+        let circleInRect = centredCircleArray[i];
+        circleInRect.updateSize(scaleFactor);
+        circleInRect.updatePosition(insideCanvas.x, insideCanvas.y, insideCanvas.width, insideCanvas.height); // Update position on every draw
+        circleInRect.display();
     }
 }

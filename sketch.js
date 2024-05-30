@@ -1,13 +1,22 @@
 // Create variable to analyze song
 let song;
-// Create container
-let analyzer;
+
 // Pre-set music to pause status
 let isPlaying = false;
+
+// Preset small rects to false to hide them
+let showSmallRects = false;
 
 // Set Volume and Pan Variables
 let volume = 1.0; // Full volume
 let pan = 0.0;  // Start of 0 in the middle of the canvas
+
+// Make an object to hold the FFT object
+let fft;
+let smoothing = 0.8;  // For the smoothing of the FFT
+let numBins = 1024;
+let spectrum = [];  // Fix spectrum when we stop the song
+let amplitude;
 
 // Define colours
 let limeGreen, roseRed, milkYellow, linePurple, shallowPurple;
@@ -17,7 +26,7 @@ let insideCanvas;
 
 // Array to store small rectangles
 let smallRectangles = [];
-let numOfSmallRects = 60;
+let numOfSmallRects = 40; // Initialise number of small random rectangles
 
 // Array to store purple lines
 let purpleLinesArray = [];
@@ -38,10 +47,9 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // Set up a tool to analyze sound's amplitude
-  analyzer = new p5.Amplitude();
-
-  // Connect analyzer to our song to analyze it
-  analyzer.setInput(song);
+  // Initialize FFT
+  fft = new p5.FFT(smoothing);
+  song.connect(fft);
 
   // State parameter range to use opacity under HSB mode
   // The current project uses RGB as its default colour mode
@@ -60,19 +68,23 @@ function setup() {
 
   // Generate purple lines
   generatePurpleLines();
-
-  // Generate small rectangles
-  generateSmallRectangles();
-
   // Create and add featured rectangles to the array
   generateFeaturedRectangles();
-
-  generateCentredCircle();
+  // Create circles in specific rect pos
+  generateCentredCircles();
 }
 
 function draw() {
   // This is background color
   background(255);
+
+  // Fix the spectrum after we stop the song
+  if (song.isPlaying()) {
+    spectrum = fft.analyze();
+  }
+
+  amplitude = fft.getEnergy(20, 20000);
+
   // Draw canvas for the drawing elements
   drawInsideCanvas();
   drawFrame();
@@ -81,20 +93,20 @@ function draw() {
   // This must be at the bottom of the canvas
   drawPurpleLines();
 
-  // Draw small rectangles
-  drawSmallRectangles();
-
   // Display and update each featured rectangle
   drawFeaturedRectangles();
-
-  // Draw circles in the middle of specific rects
+  // Draw circles in rect
   drawCentredCircle();
+
+  // Draw small rectangles outside of the frame to create glitch effect
+  if (showSmallRects) {
+    drawRandomRects();
+  }
 
   // This is the shadow of the whole canvas
   // This must be on the top of the canvas
   drawShadow();
   drawLightShadow();
-
 }
 
 function windowResized() {
@@ -108,6 +120,12 @@ function windowResized() {
 
   // Regenerate small rectangles
   generateSmallRectangles();
+
+  // Regenerate circles
+  // generateCentredCircles();
+  centredCircleArray.forEach(circle => {
+    circle.updatePosition(insideCanvas.x, insideCanvas.y, insideCanvas.width, insideCanvas.height);
+});
 }
 
 function keyPressed() {
@@ -119,7 +137,22 @@ function keyPressed() {
 function togglePlayPause() {
   if (song.isPlaying()) {
     song.pause();
+    // Hide small rects
+    showSmallRects = false;
   } else {
-    song.play();
+    song.loop();  // Loop the song instead of just playing it once
+    // Show small rects
+    showSmallRects = true;
   }
+}
+
+// Adjust volume and pan using mouse pos
+function mouseMoved() {
+  // Invert y value
+  volume = map(mouseY, 0, height, 1, 0, true);  // Map it btw 1 and 0
+  // true to keep value in the bound
+  song.setVolume(volume);
+
+  pan = map(mouseX, 0, width, -1.0, 1.0, true);
+  song.pan(pan);
 }
