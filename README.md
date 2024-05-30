@@ -108,16 +108,23 @@ The designer made a class for circles to scale them based on the audio frequency
 ```
 // Create circles based on the specific featured rectangles' pos
 class CircleInRects {
-    constructor(x, y, radius, color) {
+    constructor(x, y, radius, color, relativeX, relativeY) {
         this.x = x;
         this.y = y;
         this.radius = radius;
         this.color = color;
         this.originalRadius = radius; // Create a variable to hold original radius
+        this.relativeX = relativeX; // Store the initial relative positions
+        this.relativeY = relativeY;
     }
 
     updateSize(scaleFactor) {
         this.radius = this.originalRadius * scaleFactor;
+    }
+
+    updatePosition(canvasX, canvasY, canvasWidth, canvasHeight) {
+        this.x = canvasX + this.relativeX * canvasWidth;
+        this.y = canvasY + this.relativeY * canvasHeight;
     }
 
     display() {
@@ -136,21 +143,24 @@ function generateCentredCircles() {
     centredCircleArray = featuredRectPos.map(data => {
         let radius = data.minDimension * min(windowWidth, windowHeight) / 2; // Calculate the start radius of the circles
         let circleColour = data.color;
+        let relativeX = data.x + data.w / 2;
+        let relativeY = data.y + data.h / 2;
         let centerX = insideCanvas.x + data.x * insideCanvas.width + data.w * insideCanvas.width / 2;
         let centerY = insideCanvas.y + data.y * insideCanvas.height + data.h * insideCanvas.height / 2;
         // Initialise the circle in the middle of the rect
-        return new CircleInRects(centerX, centerY, radius, circleColour);
+        return new CircleInRects(centerX, centerY, radius, circleColour, relativeX, relativeY);
     });
 }
 ```
 The circle will rescale use the scale factor.
 ```
 function drawCentredCircle() {
-    let scaleFactor = map(amplitude, 0, 255, 0.1, 3);  // This exaggerate the movement
+    let scaleFactor = map(amplitude, 0, 255, 0.1, 5);  // This exaggerate the movement
 
     for (let i = 0; i < centredCircleArray.length; i++) {
         let circleInRect = centredCircleArray[i];
         circleInRect.updateSize(scaleFactor);
+        circleInRect.updatePosition(insideCanvas.x, insideCanvas.y, insideCanvas.width, insideCanvas.height); // Update position on every draw
         circleInRect.display();
     }
 }
