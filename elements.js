@@ -65,8 +65,8 @@ function drawPurpleLines() {
 function drawLightShadow() {
     fill(255, 10);
     noStroke;
-    //Create base part of shallow triangles
-    //Base elements of shallow
+    // Create base part of shadow triangles
+    // Base elements of shallow
     let baseUpX1 = windowWidth / 5;
     let baseUpY1 = windowHeight / 7;
     let baseUpX2 = windowWidth / 5;
@@ -75,21 +75,21 @@ function drawLightShadow() {
     let baseUpY3 = 2 * windowHeight / 7;
     let baseUpX4 = 9 * windowWidth / 25;
     let baseUpY4 = 4 * windowHeight / 7 - 2;
-    //Empty between shallow shapes
+    // Empty between shadow shapes
     let shallowEmptyX = windowWidth / 40;
     let shallowEmptyY = windowHeight / 25;
-    //calculate the distance between two shapes
+    // Calculate the distance between two shapes
     let shallowDistanceX = shallowEmptyX + 4 * windowWidth / 25;
     let shallowDistanceY = shallowEmptyY + 2 * windowHeight / 7;
-    //claculate the distance between vertical column
+    // Calculate the distance between vertical column
     let shallowVerticalDistance = windowHeight / 7 + windowHeight / 35;
-    //Use loop to draw shape
+    // Use loop to draw shape
     for (let col = 0; col < 5; col++) {
         for (let row = 0; row < 3; row++) {
             for (let i = 0; i < 20; i++) {
                 let dx = col * shallowDistanceX;
                 let dy = 1 * row * shallowDistanceY + col * shallowVerticalDistance;
-                //calculate shallow shape value
+                //calculate shadow shape value
                 let x1 = baseUpX1 + i + dx;
                 let y1 = baseUpY1 + 2 * i + dy;
                 let x2 = baseUpX2 + i + dx;
