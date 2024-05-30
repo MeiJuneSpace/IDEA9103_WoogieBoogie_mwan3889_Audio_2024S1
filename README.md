@@ -188,7 +188,7 @@ class FeatureRectangles {
     }
 }
 ```
-Corresponding drawing function to generate and draw featured rectangles:
+**Corresponding drawing function to generate and draw featured rectangles**
 
 This function is used to record position of each featured rectangles on the interior canvas:
 ```
@@ -254,7 +254,7 @@ The designer added *angle* variable in the class to rotate the rectangles.
 
 In the display(), the designer used push(), pop() and translate() to rotate corresponding rectangles.
 
-The updateAngle(amplitude) will rotate the rectangles based on the amplitude of the background music. You can see the effect by moving mouse up and down on the browser window to adjust the volume and experience the visual effect brought by volume adjustment of the rectangles.
+The updateAngle(amplitude) will rotate the rectangles based on the amplitude of the background music. You can see the effect by moving mouse up and down on the browser window to adjust the volume and experience the visual effect brought by volume adjustment.
 ```
 // Define background big rectangles
 class FeatureRectangles {
