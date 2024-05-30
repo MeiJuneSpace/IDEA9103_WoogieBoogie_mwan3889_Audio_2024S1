@@ -66,11 +66,17 @@ class FeatureRectangles {
         this.drawY = this.y;
         this.drawW = this.w;
         this.drawH = this.h;
+        this.angle = 0; // Add an angle property
     }
 
     display() {
+        push();
+        translate(this.drawX + this.drawW / 2, this.drawY + this.drawH / 2);  // Move origin to the centre of the rect
+        rotate(this.angle); // Apply rotation
         fill(this.color);
-        rect(this.drawX, this.drawY, this.drawW, this.drawH);
+        noStroke();
+        rect(-this.drawW / 2, -this.drawH / 2, this.drawW, this.drawH); // Draw the rectangle with the new origin
+        pop(); // Restore the previous drawing state
     }
 
     updateSize(insideCanvasWidth, insideCanvasHeight) {
@@ -78,6 +84,10 @@ class FeatureRectangles {
         this.drawY = this.y * insideCanvasHeight + insideCanvas.y;
         this.drawW = this.w * insideCanvasWidth;
         this.drawH = this.h * insideCanvasHeight;
+    }
+
+    updateAngle(amplitude) {
+        this.angle = map(amplitude, 0, 255, 0, 1440); // Update the angle based on the amplitude
     }
 }
 

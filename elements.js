@@ -196,9 +196,11 @@ function generateFeaturedRectangles() {
 }
 
 function drawFeaturedRectangles() {
+    let amplitude = fft.getEnergy(20, 20000); // Get the amplitude for the entire frequency range
     for (let i = 0; i < featuredRectArray.length; i++) {
         let rect = featuredRectArray[i];
         rect.updateSize(insideCanvas.width, insideCanvas.height);
+        rect.updateAngle(amplitude); // Update the rotation angle
         rect.display();
     }
 }
