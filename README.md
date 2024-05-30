@@ -1,5 +1,5 @@
 # Project Description
-This is the repository for IDEA9103 Final Project Individual Submission. 
+This is the repository for IDEA9103 Final Project Individual Submission.
 The owner of the repo is mwan3889. The owner chose the audio to drive major visual effect of the image.
 
 The original image of the current design is Piet Mondrian's *Broadway Boogie Woogie*. Please refer to group visual report for more details about group work code implementation and inspiration references.
