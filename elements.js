@@ -114,24 +114,40 @@ function drawShadow() {
     rect(0, 0, windowWidth, windowHeight);
 }
 
-// This is small random rectangles in the canvas
-function generateSmallRectangles() {
+// // This is small random rectangles in the canvas
+// function generateSmallRectangles() {
+//     let colors = [limeGreen, roseRed, milkYellow];
+
+//     smallRectangles = [];
+//     for (let i = 0; i < numOfSmallRects; i++) {
+//         let color = random(colors);
+//         let w = random(insideCanvas.width / 20);
+//         let h = random(insideCanvas.height / 20);
+//         let x = insideCanvas.x + random(insideCanvas.width - w);  // This ensures small rects are inside the frame
+//         let y = insideCanvas.y + random(insideCanvas.height - h); // This ensures small rects are inside the frame
+//         smallRectangles.push({ color, x, y, w, h });  // Push rect data into an object
+//     }
+// }
+
+// function drawSmallRectangles() {
+//     for (let smallRect of smallRectangles) {
+//         fill(smallRect.color);
+//         rect(smallRect.x, smallRect.y, smallRect.w, smallRect.h);
+//     }
+// }
+
+
+// Randomly generate small rects based on draw frame
+function drawRandomRects() {
     let colors = [limeGreen, roseRed, milkYellow];
-    smallRectangles = [];
+
     for (let i = 0; i < numOfSmallRects; i++) {
-        let color = random(colors);
+        fill(random(colors));
         let w = random(insideCanvas.width / 20);
         let h = random(insideCanvas.height / 20);
         let x = insideCanvas.x + random(insideCanvas.width - w);  // This ensures small rects are inside the frame
         let y = insideCanvas.y + random(insideCanvas.height - h); // This ensures small rects are inside the frame
-        smallRectangles.push({ color, x, y, w, h });  // Push rect data into an object
-    }
-}
-
-function drawSmallRectangles() {
-    for (let smallRect of smallRectangles) {
-        fill(smallRect.color);
-        rect(smallRect.x, smallRect.y, smallRect.w, smallRect.h);
+        rect(x, y, w, h);  // Generate rectangles
     }
 }
 
@@ -190,7 +206,7 @@ function drawFeaturedRectangles() {
 // Draw circles inside of specific rectangles
 // Lets get the position of selected rectangles first
 function getFeaturedRectPos() {
-    return [
+    let rects = [
         // In the lime green rects
         // Green 1
         { x: 0, y: 1 / 3, w: 1 / 12.5, h: 1 / 6, color: linePurple },
@@ -213,22 +229,53 @@ function getFeaturedRectPos() {
         // P5
         { x: 1 / 1.25, y: 1 / 1.54, w: 1 / 25, h: 1 / 8, color: roseRed },
     ];
+
+    // Record minimum dimension of each specific rects to create circles
+    rects = rects.map(rect => {
+        rect.minDimension = min(rect.w, rect.h);
+        return rect;
+    });
+    return rects;
 }
 
-// This is the function to generate centred circles
-function generateCentredCircle() {
+// // This is the function to generate centred circles
+// function generateCentredCircle() {
+//     let featuredRectPos = getFeaturedRectPos();
+//     centredCircleArray = featuredRectPos.map(data => {
+//         let radius = min(data.w, data.h); // Calculate radius based on the smallest dimension of the rectangle
+//         return new circlesInRectangles(data.x + data.w / 2, data.y + data.h / 2, radius, data.color);
+//     });
+//     centredCircleArray.forEach(circle => circle.updateSize(insideCanvas.width, insideCanvas.height));
+// }
+
+// function drawCentredCircle() {
+//     for (let i = 0; i < centredCircleArray.length; i++) {
+//         let circle = centredCircleArray[i];
+//         circle.updateSize(insideCanvas.width, insideCanvas.height, scaleFactor);
+//         circle.display();
+//     }
+// }
+
+// Generate circles based on the specific rect pos and change size based on fft
+function generateCentredCircles() {
     let featuredRectPos = getFeaturedRectPos();
+
     centredCircleArray = featuredRectPos.map(data => {
-        let radius = min(data.w, data.h); // Calculate radius based on the smallest dimension of the rectangle
-        return new circlesInRectangles(data.x + data.w / 2, data.y + data.h / 2, radius, data.color);
+        let radius = data.minDimension * min(windowWidth, windowHeight) / 2; // Calculate the start radius of the circles
+        let circleColour = data.color;
+        let centerX = insideCanvas.x + data.x * insideCanvas.width + data.w * insideCanvas.width / 2;
+        let centerY = insideCanvas.y + data.y * insideCanvas.height + data.h * insideCanvas.height / 2;
+        // Initialise the circle in the middle of the rect
+        return new CircleInRects(centerX, centerY, radius, circleColour);
     });
-    centredCircleArray.forEach(circle => circle.updateSize(insideCanvas.width, insideCanvas.height));
 }
 
 function drawCentredCircle() {
+    let scaleFactor = map(amplitude, 0, 255, 0.1, 8);  // This exaggerate the movement
+
     for (let i = 0; i < centredCircleArray.length; i++) {
-        let circle = centredCircleArray[i];
-        circle.updateSize(insideCanvas.width, insideCanvas.height);
-        circle.display();
+        let circleInRect = centredCircleArray[i];
+        circleInRect.updateSize(scaleFactor);
+        circleInRect.display();
     }
 }

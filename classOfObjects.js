@@ -81,27 +81,23 @@ class FeatureRectangles {
     }
 }
 
-// Create a class to store circles in big rects
-class circlesInRectangles {
-    constructor(x, y, r, color) {
-        this.x = x; // Normalized x position (percentage of insideCanvas width)
-        this.y = y; // Normalized y position (percentage of insideCanvas height)
-        this.r = r; // Radius (based on the minimum dimension of the corresponding rectangle)
+// Create circles based on the specific featured rectangles' pos
+class CircleInRects {
+    constructor(x, y, radius, color) {
+        this.x = x;
+        this.y = y;
+        this.radius = radius;
         this.color = color;
-        this.drawX = this.x;
-        this.drawY = this.y;
-        this.drawR = this.r;
+        this.originalRadius = radius; // Create a variable to hold original radius
+    }
+
+    updateSize(scaleFactor) {
+        this.radius = this.originalRadius * scaleFactor;
     }
 
     display() {
-    fill(this.color);
-    noStroke();
-    ellipse(this.drawX, this.drawY, this.drawR);
-    }
-
-    updateSize(insideCanvasWidth, insideCanvasHeight) {
-      this.drawX = this.x * insideCanvasWidth + insideCanvas.x;
-      this.drawY = this.y * insideCanvasHeight + insideCanvas.y;
-      this.drawR = this.r * min(insideCanvasWidth, insideCanvasHeight);
+        fill(this.color);
+        noStroke();
+        ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
     }
 }
