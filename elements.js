@@ -114,29 +114,6 @@ function drawShadow() {
     rect(0, 0, windowWidth, windowHeight);
 }
 
-// // This is small random rectangles in the canvas
-// function generateSmallRectangles() {
-//     let colors = [limeGreen, roseRed, milkYellow];
-
-//     smallRectangles = [];
-//     for (let i = 0; i < numOfSmallRects; i++) {
-//         let color = random(colors);
-//         let w = random(insideCanvas.width / 20);
-//         let h = random(insideCanvas.height / 20);
-//         let x = insideCanvas.x + random(insideCanvas.width - w);  // This ensures small rects are inside the frame
-//         let y = insideCanvas.y + random(insideCanvas.height - h); // This ensures small rects are inside the frame
-//         smallRectangles.push({ color, x, y, w, h });  // Push rect data into an object
-//     }
-// }
-
-// function drawSmallRectangles() {
-//     for (let smallRect of smallRectangles) {
-//         fill(smallRect.color);
-//         rect(smallRect.x, smallRect.y, smallRect.w, smallRect.h);
-//     }
-// }
-
-
 // Randomly generate small rects based on draw frame
 function drawRandomRects() {
     let colors = [limeGreen, roseRed, milkYellow];
@@ -239,24 +216,6 @@ function getFeaturedRectPos() {
     });
     return rects;
 }
-
-// // This is the function to generate centred circles
-// function generateCentredCircle() {
-//     let featuredRectPos = getFeaturedRectPos();
-//     centredCircleArray = featuredRectPos.map(data => {
-//         let radius = min(data.w, data.h); // Calculate radius based on the smallest dimension of the rectangle
-//         return new circlesInRectangles(data.x + data.w / 2, data.y + data.h / 2, radius, data.color);
-//     });
-//     centredCircleArray.forEach(circle => circle.updateSize(insideCanvas.width, insideCanvas.height));
-// }
-
-// function drawCentredCircle() {
-//     for (let i = 0; i < centredCircleArray.length; i++) {
-//         let circle = centredCircleArray[i];
-//         circle.updateSize(insideCanvas.width, insideCanvas.height, scaleFactor);
-//         circle.display();
-//     }
-// }
 
 // Generate circles based on the specific rect pos and change size based on fft
 function generateCentredCircles() {
