@@ -17,6 +17,10 @@ The current individual project achieves the animation effect through the followi
 * Adjusting the size of the circles based on the amplitude of the background music.
 * Modifying the rotation of the fixed position rectangles (i.e., large or featured rectangles) in response to the music's amplitude.
 * Allowing the user to adjust the music's amplitude by moving the mouse up (increasing volume) or down (decreasing volume) on the canvas. This mouse interaction, combined with the animation properties of the circles and large rectangles, creates the overall dynamic effect of the artwork.
+### Team Members' Animation
+1. **TIAN's**: Click the PurpleLines - generating small circles move along the PurpleLines path.
+2. **SHI's**: Use clock for time representation. Small rectangles will change position and colour based on the time variable. Shadow changes the position as time passes by.
+3. **ZENG's**: The circles transform into small caterpillars floating in the image.
 
 ## File Arrangement
 The owner of the repository used **classOfObejects.js** to group all the object elements and **elements.js** to group all the functions for svg image generation and drawing. All the other functions for mouse, keyboard interaction and variable statement are in the **sketch.js**.
