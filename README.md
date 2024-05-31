@@ -18,6 +18,9 @@ The current individual project achieves the animation effect through the followi
 * Modifying the rotation of the fixed position rectangles (i.e., large or featured rectangles) in response to the music's amplitude.
 * Allowing the user to adjust the music's amplitude by moving the mouse up (increasing volume) or down (decreasing volume) on the canvas. This mouse interaction, combined with the animation properties of the circles and large rectangles, creates the overall dynamic effect of the artwork.
 
+## File Arrangement
+The owner of the repository used **classOfObejects.js** to group all the object elements and **elements.js** to group all the functions for svg image generation and drawing. All the other functions for mouse, keyboard interaction and variable statement are in the **sketch.js**.
+
 # Details of Individual Approach
 ## Changes to the Project File
 ### Refresh Background Small Rectangles 60 Times Per Second
