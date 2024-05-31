@@ -43,6 +43,7 @@ class PurpleLine {
 
     display() {
         fill(linePurple);
+        noStroke();
         rect(this.drawX, this.drawY, this.drawW, this.drawH);
     }
 
@@ -74,7 +75,8 @@ class FeatureRectangles {
         translate(this.drawX + this.drawW / 2, this.drawY + this.drawH / 2);  // Move origin to the centre of the rect
         rotate(this.angle); // Apply rotation
         fill(this.color);
-        noStroke();
+        stroke(0);
+        strokeWeight(3);
         rect(-this.drawW / 2, -this.drawH / 2, this.drawW, this.drawH); // Draw the rectangle with the new origin
         pop(); // Restore the previous drawing state
     }
@@ -114,7 +116,8 @@ class CircleInRects {
 
     display() {
         fill(this.color);
-        noStroke();
+        stroke(0);
+        strokeWeight(3);
         ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
     }
 }

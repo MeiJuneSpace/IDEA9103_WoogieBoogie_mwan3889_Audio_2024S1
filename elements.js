@@ -120,6 +120,7 @@ function drawRandomRects() {
 
     for (let i = 0; i < numOfSmallRects; i++) {
         fill(random(colors));
+        noStroke();
         let w = random(insideCanvas.width / 20);
         let h = random(insideCanvas.height / 20);
         let x = insideCanvas.x + random(insideCanvas.width - w);  // This ensures small rects are inside the frame
