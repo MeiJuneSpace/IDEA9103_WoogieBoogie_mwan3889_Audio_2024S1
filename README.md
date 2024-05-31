@@ -5,7 +5,7 @@ The owner of the repo is mwan3889. The owner chose the audio to drive major visu
 The original image of the current design is Piet Mondrian's *Broadway Boogie Woogie*. Please refer to group visual report for more details about group work code implementation and inspiration references.
 
 ## Interation Instruction
-* Press the space to start music play.
+* Press the *spacekey* to start music play.
 * Move your mouse up and down the screen to adjust the volume of the music and see corresponding visual effect of the circles and rectangles.
 * Move your mouse from left to right to hear the pan effect.
 
@@ -18,6 +18,8 @@ The current individual project achieves the animation effect through the followi
 * Modifying the rotation of the fixed position rectangles (i.e., large or featured rectangles) in response to the music's amplitude.
 * Allowing the user to adjust the music's amplitude by moving the mouse up (increasing volume) or down (decreasing volume) on the canvas. This mouse interaction, combined with the animation properties of the circles and large rectangles, creates the overall dynamic effect of the artwork.
 ### Team Members' Animation
+**Note:** They may make slight adjustments to their intended effects based on real circumstances. Please refer to the actual individual art pieces for the specific results.
+
 1. **TIAN's**: Click the PurpleLines - generating small circles move along the PurpleLines path.
 2. **SHI's**: Use clock for time representation. Small rectangles will change position and colour based on the time variable. Shadow changes the position as time passes by.
 3. **ZENG's**: The circles transform into small caterpillars floating in the image.
@@ -26,11 +28,24 @@ The current individual project achieves the animation effect through the followi
 The owner of the repository used **classOfObejects.js** to group all the object elements and **elements.js** to group all the functions for svg image generation and drawing. All the other functions for mouse, keyboard interaction and variable statement are in the **sketch.js**.
 
 # Details of Individual Approach
-## Changes to the Project File
+## Changes to the Group Project File
 ### Refresh Background Small Rectangles 60 Times Per Second
 The original code created a static image with small, randomly generated rectangles. To achieve a more dynamic visual effect, the current code combines the rectangle generation and drawing into a single function within **draw()**. This approach continuously refreshes the page based on the frame rate, resulting in a more fluid and lively display.
 
 The small rectangles will only be displayed if the music starts to play.
+```
+function togglePlayPause() {
+  if (song.isPlaying()) {
+    song.pause();
+    // Hide small rects
+    showSmallRects = false;
+  } else {
+    song.loop();  // Loop the song instead of just playing it once
+    // Show small rects
+    showSmallRects = true;
+  }
+}
+```
 #### Original Code
 ```
 function generateSmallRectangles() {
@@ -102,7 +117,7 @@ function drawCentredCircle() {
 }
 ```
 #### Update Code
-The designer made variables to hold fft related objects.
+The designer made variables to hold FFT related objects.
 ```
 // Make an object to hold the FFT object
 let fft;
@@ -347,4 +362,4 @@ function drawFeaturedRectangles() {
 ```
 
 ## References
-No extra references for the code, all the techniques are coming from the tutorials covered in IDEA9103.
+No extra references for the code, all the techniques are coming from the tutorials covered in IDEA9103 2024 S1.
