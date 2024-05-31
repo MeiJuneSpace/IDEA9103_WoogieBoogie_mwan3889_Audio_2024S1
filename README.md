@@ -136,7 +136,8 @@ class CircleInRects {
 
     display() {
         fill(this.color);
-        noStroke();
+        stroke(0);
+        strokeWeight(3);
         ellipse(this.x, this.y, this.radius * 2, this.radius * 2);
     }
 }
@@ -193,7 +194,6 @@ function windowResized() {
 }
 ```
 ### Modification of Featured Rectangles
-
 The designer updated the featured rectangle class to rotate the rectangles based on the background music fft.
 #### Original Code
 Original class definition of featured rectangles:
@@ -313,7 +313,8 @@ class FeatureRectangles {
         translate(this.drawX + this.drawW / 2, this.drawY + this.drawH / 2);  // Move origin to the centre of the rect
         rotate(this.angle); // Apply rotation
         fill(this.color);
-        noStroke();
+        stroke(0);
+        strokeWeight(3);
         rect(-this.drawW / 2, -this.drawH / 2, this.drawW, this.drawH); // Draw the rectangle with the new origin
         pop(); // Restore the previous drawing state
     }
@@ -344,7 +345,6 @@ function drawFeaturedRectangles() {
     }
 }
 ```
-
 
 ## References
 No extra references for the code, all the techniques are coming from the tutorials covered in IDEA9103.
