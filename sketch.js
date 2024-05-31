@@ -122,7 +122,6 @@ function windowResized() {
   generateSmallRectangles();
 
   // Regenerate circles
-  // generateCentredCircles();
   centredCircleArray.forEach(circle => {
     circle.updatePosition(insideCanvas.x, insideCanvas.y, insideCanvas.width, insideCanvas.height);
 });
